@@ -16,15 +16,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onScrollToNext }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const landscapeBgRef = useRef<HTMLDivElement>(null);
 
-  // Cloud Animation Refs (Placed directly in hero base)
-  const cloudsContainerRef = useRef<HTMLDivElement>(null);
-  const cloud1Ref = useRef<HTMLImageElement>(null);
-  const cloud2Ref = useRef<HTMLImageElement>(null);
-  const cloud3Ref = useRef<HTMLImageElement>(null);
-  const cloud4Ref = useRef<HTMLImageElement>(null);
-  const cloud5Ref = useRef<HTMLImageElement>(null);
-  const sunBeamsRef = useRef<HTMLDivElement>(null);
-
   // Redesigned Animated Lines Refs
   const lineTopRef = useRef<HTMLDivElement>(null);
   const lineMidRef = useRef<HTMLDivElement>(null);
@@ -114,84 +105,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onScrollToNext }) => {
     );
   }, []);
 
-  // Real Clouds Ambient Float + Scroll-Triggered Parting Animation
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const ctx = gsap.context(() => {
-      // 1. Gentle living ambient billowing drift
-      gsap.to(cloud1Ref.current, {
-        x: '+=16',
-        y: '-=10',
-        duration: 7,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-      });
-      gsap.to(cloud2Ref.current, {
-        x: '-=18',
-        y: '-=8',
-        duration: 8,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-      });
-      gsap.to(cloud3Ref.current, {
-        scale: 1.05,
-        y: '-=14',
-        duration: 9,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-      });
-      gsap.to(cloud4Ref.current, {
-        x: '+=12',
-        duration: 10,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-      });
-
-      // 2. Scroll-scrubbed parting flight transition directly into Pegasus section
-      const scrollTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 0.5,
-        },
-      });
-
-      // Flank clouds fly out to the sides in 3D parallax
-      scrollTl.to(
-        [cloud1Ref.current, cloud4Ref.current],
-        { x: '-80%', y: '-25%', scale: 2.2, opacity: 0, ease: 'power2.inOut' },
-        0
-      );
-      scrollTl.to(
-        [cloud2Ref.current, cloud5Ref.current],
-        { x: '80%', y: '-20%', scale: 2.3, opacity: 0, ease: 'power2.inOut' },
-        0
-      );
-
-      // Center dense ground cloud surges up and dissipates
-      scrollTl.to(
-        cloud3Ref.current,
-        { y: '-70%', scale: 2.6, opacity: 0, ease: 'power2.inOut' },
-        0.05
-      );
-
-      // Sunbeams flare between the parting clouds
-      scrollTl.to(
-        sunBeamsRef.current,
-        { opacity: 0.9, scale: 1.4, ease: 'power1.out' },
-        0.1
-      );
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
-
   const toggleSound = (e: React.MouseEvent) => {
     e.stopPropagation();
     const muted = !sounds.toggleMute();
@@ -237,61 +150,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onScrollToNext }) => {
         </div>
       </div>
 
-      {/* 3. REAL CUMULUS CLOUD ANIMATION BILLOWING AT BASE (Directly on Hero itself) */}
-      <div
-        ref={cloudsContainerRef}
-        className="absolute bottom-0 left-0 right-0 h-[420px] pointer-events-none z-20 overflow-hidden"
-      >
-        {/* Seamless bottom fade directly into Pegasus section's deep royal blue */}
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent via-[#071338]/60 to-[#071338]" />
-
-        {/* Volumetric Sunbeams breaking through parting clouds on scroll */}
-        <div
-          ref={sunBeamsRef}
-          className="absolute inset-0 pointer-events-none opacity-0 flex items-center justify-center will-change-transform z-10"
-        >
-          <div className="w-[120vw] h-[100vh] bg-[radial-gradient(ellipse_at_bottom,rgba(255,255,255,0.85)_0%,rgba(225,240,255,0.4)_40%,transparent_75%)] blur-2xl" />
-        </div>
-
-        {/* Cloud 1: Foreground Left Billow */}
-        <img
-          ref={cloud1Ref}
-          src="/assets/real_cumulus_cloud_1.png"
-          alt="Real Cumulus Cloud Left"
-          className="absolute left-[-12%] bottom-[-18%] w-[68%] max-w-[950px] h-auto pointer-events-none z-20 will-change-transform opacity-95 drop-shadow-[0_15px_35px_rgba(0,0,0,0.15)]"
-        />
-
-        {/* Cloud 2: Foreground Right Billow */}
-        <img
-          ref={cloud2Ref}
-          src="/assets/real_cumulus_cloud_2.png"
-          alt="Real Cumulus Cloud Right"
-          className="absolute right-[-12%] bottom-[-14%] w-[68%] max-w-[980px] h-auto pointer-events-none z-20 will-change-transform opacity-95 drop-shadow-[0_15px_35px_rgba(0,0,0,0.15)]"
-        />
-
-        {/* Cloud 3: Center Ground Cloud Billow */}
-        <img
-          ref={cloud3Ref}
-          src="/assets/real_cumulus_cloud_3.png"
-          alt="Real Cumulus Cloud Center"
-          className="absolute left-1/2 -translate-x-1/2 bottom-[-22%] w-[88%] max-w-[1250px] h-auto pointer-events-none z-25 will-change-transform opacity-90 drop-shadow-2xl"
-        />
-
-        {/* Cloud 4: Drift Cloud High Left */}
-        <img
-          ref={cloud4Ref}
-          src="/assets/real_cumulus_cloud_4.png"
-          alt="Real High Cumulus Cloud Left"
-          className="absolute left-[-6%] top-[15%] w-[52%] max-w-[700px] h-auto pointer-events-none z-15 will-change-transform opacity-80"
-        />
-
-        {/* Cloud 5: Drift Cloud High Right */}
-        <img
-          ref={cloud5Ref}
-          src="/assets/real_cumulus_cloud_1.png"
-          alt="Real High Cumulus Cloud Right"
-          className="absolute right-[-6%] top-[20%] w-[48%] max-w-[650px] h-auto pointer-events-none z-15 will-change-transform opacity-75"
-        />
+      {/* 3. SOFT MIST GRADIENT TRANSITION AT BASE (Seamless link to Cloud Flight) */}
+      <div className="absolute bottom-0 left-0 right-0 h-44 pointer-events-none z-20">
+        <div className="w-full h-full bg-gradient-to-b from-transparent via-[#e8f1f8]/40 to-[#e8f1f8]" />
       </div>
 
       {/* 4. REDESIGNED ARCHITECTURAL LINES & EDITORIAL TYPOGRAPHY */}

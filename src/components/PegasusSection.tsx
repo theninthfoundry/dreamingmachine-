@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { sounds } from '../utils/audio';
-import { Compass, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 interface PegasusSectionProps {
   onOpenSketchbook: () => void;
@@ -15,6 +15,7 @@ export const PegasusSection: React.FC<PegasusSectionProps> = ({ onOpenSketchbook
 
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [foilAngle, setFoilAngle] = useState<number>(45);
+  const [activeMode, setActiveMode] = useState<'classic' | 'astral' | 'blueprint'>('classic');
 
   // Starlight background particle dust
   useEffect(() => {
@@ -136,22 +137,60 @@ export const PegasusSection: React.FC<PegasusSectionProps> = ({ onOpenSketchbook
       {/* Interactive starlight particles */}
       <canvas ref={particlesRef} className="absolute inset-0 w-full h-full pointer-events-none z-10" />
 
-      {/* Header telemetry / Editorial subtitle */}
+      {/* Header telemetry / Editorial subtitle matching Image 2 */}
       <div className="relative z-20 max-w-4xl text-center mb-8 flex flex-col items-center">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full border border-sky-400/30 bg-sky-950/40 text-sky-300 text-xs font-mono uppercase tracking-widest backdrop-blur-md">
-          <Compass className="w-3.5 h-3.5 animate-spin-slow text-amber-400" />
-          <span>Section 02 // Classical Allegory &amp; Verified Craft</span>
-        </div>
-
         <h2
           style={{ fontFamily: 'var(--font-serif-luxury)' }}
           className="text-4xl sm:text-6xl md:text-7xl text-white font-normal uppercase tracking-wider mt-4"
         >
-          The Winged Steed
+          The Winged Ascent
         </h2>
-        <p className="mt-2 text-sky-200/70 font-serif italic text-sm md:text-base max-w-lg">
-          &ldquo;Beyond the mist lies Pegasus — symbol of untamed momentum and verified ideas.&rdquo;
+        <p className="mt-2 text-sky-200/80 font-serif italic text-sm md:text-base max-w-xl">
+          Scroll to animate the celestial steed — moving in synchronized kinetic harmony with orbital geometry.
         </p>
+
+        {/* Mode Selector Tabs from Image 2 */}
+        <div className="flex items-center space-x-2 sm:space-x-3 mt-6">
+          <button
+            onClick={() => {
+              sounds.playClick();
+              setActiveMode('classic');
+            }}
+            className={`px-4 py-1.5 rounded-full text-[11px] font-mono tracking-wider uppercase transition-all ${
+              activeMode === 'classic'
+                ? 'bg-amber-400 text-neutral-950 font-bold shadow-[0_0_15px_rgba(251,191,36,0.6)]'
+                : 'border border-sky-400/40 text-sky-300 hover:border-white hover:text-white bg-sky-950/30'
+            }`}
+          >
+            Classic Engraving
+          </button>
+          <button
+            onClick={() => {
+              sounds.playClick();
+              setActiveMode('astral');
+            }}
+            className={`px-4 py-1.5 rounded-full text-[11px] font-mono tracking-wider uppercase transition-all ${
+              activeMode === 'astral'
+                ? 'bg-sky-400 text-neutral-950 font-bold shadow-[0_0_15px_rgba(56,189,248,0.6)]'
+                : 'border border-sky-400/40 text-sky-300 hover:border-white hover:text-white bg-sky-950/30'
+            }`}
+          >
+            Astral Radiance
+          </button>
+          <button
+            onClick={() => {
+              sounds.playClick();
+              setActiveMode('blueprint');
+            }}
+            className={`px-4 py-1.5 rounded-full text-[11px] font-mono tracking-wider uppercase transition-all ${
+              activeMode === 'blueprint'
+                ? 'bg-cyan-400 text-neutral-950 font-bold shadow-[0_0_15px_rgba(34,211,238,0.6)]'
+                : 'border border-sky-400/40 text-sky-300 hover:border-white hover:text-white bg-sky-950/30'
+            }`}
+          >
+            Blueprint Contour
+          </button>
+        </div>
       </div>
 
       {/* THE MASTER EXACT PEGASUS ARTWORK CANVAS */}
@@ -167,6 +206,11 @@ export const PegasusSection: React.FC<PegasusSectionProps> = ({ onOpenSketchbook
             : '0 25px 80px rgba(0,0,0,0.8)',
         }}
       >
+        {/* Four Golden Filigree Corner Brackets from Image 2 */}
+        <div className="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-amber-400/90 pointer-events-none z-30 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+        <div className="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-amber-400/90 pointer-events-none z-30 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+        <div className="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-amber-400/90 pointer-events-none z-30 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+        <div className="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-amber-400/90 pointer-events-none z-30 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
         {/* Dynamic Metallic Foil Specular Reflection */}
         <div
           className="absolute inset-0 pointer-events-none z-20 mix-blend-color-dodge opacity-25 group-hover:opacity-45 transition-opacity"
@@ -186,8 +230,24 @@ export const PegasusSection: React.FC<PegasusSectionProps> = ({ onOpenSketchbook
           <img
             src="/assets/pegasus_master_exact.jpg"
             alt="The Winged Pegasus Master Artwork"
-            className="w-full h-full object-cover object-center pointer-events-none select-none"
+            className={`w-full h-full object-cover object-center pointer-events-none select-none transition-all duration-500 ${
+              activeMode === 'astral'
+                ? 'brightness-110 contrast-125 saturate-150'
+                : activeMode === 'blueprint'
+                ? 'brightness-105 contrast-130 hue-rotate-15 saturate-125'
+                : 'brightness-100 contrast-100'
+            }`}
           />
+
+          {/* Blueprint Grid Overlay if blueprint mode active */}
+          {activeMode === 'blueprint' && (
+            <div className="absolute inset-0 bg-blueprint-grid opacity-35 pointer-events-none mix-blend-screen" />
+          )}
+
+          {/* Astral Glow Overlay if astral mode active */}
+          {activeMode === 'astral' && (
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.25)_0%,transparent_70%)] pointer-events-none mix-blend-color-dodge" />
+          )}
 
           {/* Interactive Hotspot: REPLAY (Top Center) */}
           <button
