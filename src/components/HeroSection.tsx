@@ -451,7 +451,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onScrollToNext }) => {
             className="flex flex-col items-center cursor-pointer group hover:scale-105 transition-transform"
           >
             <span className="text-[10px] font-mono tracking-[0.25em] text-white/90 uppercase mb-1 drop-shadow">
-              Scroll To Enter Pegasus
+              Scroll To Enter Real Clouds
             </span>
             <div className="w-7 h-7 rounded-full border border-white/40 flex items-center justify-center bg-black/30 backdrop-blur-md group-hover:border-white transition-colors shadow">
               <ArrowDown className="w-3.5 h-3.5 text-white animate-bounce" />
