@@ -5,9 +5,11 @@ import confetti from 'canvas-confetti';
 
 interface NavbarProps {
   onReplayHero?: () => void;
+  onOpenSketchbook?: () => void;
+  onReopenEntry?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onReplayHero }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onReplayHero, onOpenSketchbook, onReopenEntry }) => {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(true);
   const [showConnectModal, setShowConnectModal] = useState<boolean>(false);
@@ -56,28 +58,46 @@ export const Navbar: React.FC<NavbarProps> = ({ onReplayHero }) => {
     <>
       <header className="fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 py-4 pointer-events-none transition-all duration-300">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Brandmark (Curvy luxury font) */}
+          {/* Brandmark (Curvy luxury font + Star Logo) */}
           <div
-            onClick={() => {
-              sounds.playClick(600);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-              if (onReplayHero) onReplayHero();
-            }}
-            className={`pointer-events-auto cursor-pointer px-4 py-2 rounded-full transition-all duration-300 ${
+            className={`pointer-events-auto flex items-center space-x-1.5 px-3 py-1.5 rounded-full transition-all duration-300 ${
               isScrolled
                 ? 'bg-white/85 backdrop-blur-md shadow-md border border-neutral-200/80 text-neutral-900'
                 : 'bg-black/35 backdrop-blur-md text-white border border-white/20'
             }`}
           >
-            <div className="flex items-center space-x-2">
+            <div
+              onClick={() => {
+                sounds.playClick(600);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if (onReplayHero) onReplayHero();
+              }}
+              className="cursor-pointer flex items-center space-x-2"
+            >
               <span
                 style={{ fontFamily: 'var(--font-serif-luxury)' }}
                 className="text-lg sm:text-xl font-normal tracking-wide uppercase leading-none"
               >
                 Sreeshanth Namireddy
               </span>
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
             </div>
+
+            {onReopenEntry && (
+              <button
+                onClick={() => {
+                  sounds.playStarSparkle();
+                  onReopenEntry();
+                }}
+                className="w-6 h-6 rounded-full bg-black/40 hover:bg-amber-400 p-0.5 flex items-center justify-center transition-colors shadow border border-white/20"
+                title="Re-open Star Entry Gateway"
+              >
+                <img
+                  src="/assets/entry_star_logo_transparent.png"
+                  alt="Star Logo"
+                  className="w-4 h-4 object-contain filter brightness-125"
+                />
+              </button>
+            )}
           </div>
 
           {/* Center Section Pills */}
@@ -101,7 +121,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onReplayHero }) => {
               02 Pegasus
             </button>
             <button
-              onClick={() => scrollTo('sketchbook')}
+              onClick={() => {
+                if (onOpenSketchbook) {
+                  sounds.playPaperRustle();
+                  onOpenSketchbook();
+                } else {
+                  scrollTo('sketchbook');
+                }
+              }}
               className="px-3.5 py-1.5 rounded-full hover:bg-neutral-900 hover:text-white transition-colors"
             >
               03 Sketchbook

@@ -207,6 +207,59 @@ class SoundEngine {
     });
   }
 
+  // Cosmic Star Warp expansion burst
+  public playStarWarp() {
+    this.init();
+    if (this.isMuted) return;
+    [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98, 2093.00].forEach((f, i) => {
+      setTimeout(() => this.playSoftNote(f, 1.8, 0.12), i * 60);
+    });
+    this.playSubBass(90, 1.5, 0.25);
+  }
+
+  // Cartoon Smoke Bomb "POOF" Blast
+  public playCartoonPoof() {
+    this.init();
+    if (this.isMuted || !this.ctx) return;
+    try {
+      // 1. Pitched cartoon frequency drop "BWOOP"
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(480, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(80, this.ctx.currentTime + 0.25);
+      gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.25);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.25);
+
+      // 2. White noise puff burst
+      const bufferSize = this.ctx.sampleRate * 0.18;
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const output = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.2));
+      }
+      const whiteNoise = this.ctx.createBufferSource();
+      whiteNoise.buffer = buffer;
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(1400, this.ctx.currentTime);
+      filter.frequency.linearRampToValueAtTime(300, this.ctx.currentTime + 0.18);
+      const noiseGain = this.ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.18);
+      whiteNoise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(this.ctx.destination);
+      whiteNoise.start();
+    } catch {
+      // Safe fallback
+    }
+  }
+
   // Single chime
   public playChime(freq: number = 660, volume: number = 0.2) {
     this.playSoftNote(freq, 2.0, volume);
