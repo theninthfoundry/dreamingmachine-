@@ -159,3 +159,4 @@ export const CartoonSmokeBlast: React.FC<CartoonSmokeBlastProps> = ({ onComplete
     </div>
   );
 };
+
