@@ -4,7 +4,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
-import { CloudTransition } from './components/CloudTransition';
 import { PegasusSection } from './components/PegasusSection';
 import { SketchbookSection } from './components/SketchbookSection';
 import { BubbleWorksSection, type ProjectItem } from './components/BubbleWorksSection';
@@ -57,11 +56,8 @@ export const App: React.FC = () => {
 
       {/* Main Content Sections */}
       <main className="flex-grow">
-        {/* Section 01: Hero Sanctuary (4 Rising Pillars, Parental Advisory, Curvy Editorial Display) */}
+        {/* Section 01: Hero Sanctuary (Full Panoramic Landscape, Parental Advisory, Curvy Editorial Display, Real Clouds) */}
         <HeroSection onScrollToNext={() => scrollToSection('pegasus')} />
-
-        {/* Transition 01: Billowing Clouds Portal */}
-        <CloudTransition />
 
         {/* Section 02: The Winged Pegasus (Deep Royal Blue Editorial Poster & Motion Graphics) */}
         <PegasusSection />
