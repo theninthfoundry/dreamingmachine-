@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
+import { CloudTransition } from './components/CloudTransition';
 import { PegasusSection } from './components/PegasusSection';
 import { WorkSection3D } from './components/WorkSection3D';
 import { ManifestoSection } from './components/ManifestoSection';
@@ -78,7 +79,10 @@ export const App: React.FC = () => {
       {/* 4. Main Continuous Vertical Experience */}
       <main className="flex-grow">
         {/* Section 01: Hero Sanctuary (Full Panoramic Landscape, Parental Advisory, Curvy Editorial Display, Real Clouds) */}
-        <HeroSection onScrollToNext={() => scrollToSection('pegasus')} />
+        <HeroSection onScrollToNext={() => scrollToSection('cloud-flight')} />
+
+        {/* Transition: Enhanced Billowing Clouds Flight Portal (Snappy, Zero Dead Space) */}
+        <CloudTransition />
 
         {/* Section 02: The Winged Pegasus (Exact Master Artwork, 3D Foil, Open Sketchbook Hotspot) */}
         <PegasusSection onOpenSketchbook={() => setIsSketchbookOpen(true)} />
